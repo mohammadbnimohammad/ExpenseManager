@@ -2,6 +2,7 @@ package com.mohammad.ExpenseManager.controller;
 
 import com.mohammad.ExpenseManager.model.User;
 import com.mohammad.ExpenseManager.service.UserService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,7 +20,7 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<User> createUser(@RequestBody User user){
+    public ResponseEntity<User> createUser(@Valid @RequestBody User user){
       User saveUser=userService.createUser(user);
       return new ResponseEntity<>(saveUser, HttpStatus.CREATED);
     }
