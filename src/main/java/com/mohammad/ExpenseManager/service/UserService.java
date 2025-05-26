@@ -1,7 +1,8 @@
 package com.mohammad.ExpenseManager.service;
 
+import com.mohammad.ExpenseManager.dto.UserDto;
 import com.mohammad.ExpenseManager.model.User;
 
 public interface UserService {
-   public User createUser(User user);
+   public User createUser(UserDto userDto);
 }

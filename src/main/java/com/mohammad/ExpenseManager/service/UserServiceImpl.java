@@ -1,5 +1,6 @@
 package com.mohammad.ExpenseManager.service;
 
+import com.mohammad.ExpenseManager.dto.UserDto;
 import com.mohammad.ExpenseManager.exception.EmailAlreadyExistsException;
 import com.mohammad.ExpenseManager.exception.UsernameAlreadyExistsException;
 import com.mohammad.ExpenseManager.model.User;
@@ -22,24 +23,23 @@ public class UserServiceImpl implements UserService {
 
     // to save new user in app
     @Override
-    public User createUser(User user) {
+    public User createUser(UserDto userDto) {
 
-        String username = user.getUsername().trim();
-        String email = user.getEmail().trim();
 
         // chack if username is not exists
-        if (userRepository.existsByUsername(user.getUsername().trim())) {
+        if (userRepository.existsByUsername(userDto.getUsername().trim())) {
             throw new UsernameAlreadyExistsException("user name is already taken. Please try another one.");
         }
 
 
         // check if email is not registered
-        if (userRepository.existsByEmail(user.getEmail().trim())) {
+        if (userRepository.existsByEmail(userDto.getEmail().trim())) {
             throw new EmailAlreadyExistsException("email already registered. Try logging in or use a different email.");
         }
-        user.setUsername(username);
-        user.setEmail(email);
-        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+        User user=new User();
+        user.setUsername(userDto.getUsername().trim());
+        user.setEmail(userDto.getEmail().trim());
+        user.setPassword(bCryptPasswordEncoder.encode(userDto.getPassword()));
         return userRepository.save(user);
     }
 }
