@@ -1,7 +1,6 @@
 package com.mohammad.ExpenseManager.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
-
 import lombok.*;
 
 @Entity
@@ -23,6 +22,7 @@ public class User {
     @Column(nullable = false, unique = true)
     private String email;
     @NotBlank(message = "password is required")
+    @Size(min = 8, max = 15, message = "Password must be between 8 and 15 characters")
     @Column(nullable = false ,name = "pass" )
     private String password;
 
