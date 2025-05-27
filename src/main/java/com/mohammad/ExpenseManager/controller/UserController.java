@@ -1,6 +1,7 @@
 package com.mohammad.ExpenseManager.controller;
 
 import com.mohammad.ExpenseManager.dto.UserDto;
+import com.mohammad.ExpenseManager.dto.UserResponseDto;
 import com.mohammad.ExpenseManager.model.User;
 import com.mohammad.ExpenseManager.service.UserService;
 import jakarta.validation.Valid;
@@ -21,8 +22,8 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<User> createUser(@Valid @RequestBody UserDto userDto){
-      User saveUser=userService.createUser(userDto);
+    public ResponseEntity<UserResponseDto> createUser(@Valid @RequestBody UserDto userDto){
+      UserResponseDto saveUser=userService.createUser(userDto);
       return new ResponseEntity<>(saveUser, HttpStatus.CREATED);
     }
 }

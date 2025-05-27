@@ -1,8 +1,7 @@
 package com.mohammad.ExpenseManager.service;
 
-import com.mohammad.ExpenseManager.dto.UserDto;
-import com.mohammad.ExpenseManager.exception.EmailAlreadyExistsException;
-import com.mohammad.ExpenseManager.exception.UsernameAlreadyExistsException;
+import com.mohammad.ExpenseManager.dto.*;
+import com.mohammad.ExpenseManager.exception.*;
 import com.mohammad.ExpenseManager.model.User;
 import com.mohammad.ExpenseManager.repository.UserRepository;
 
@@ -23,7 +22,7 @@ public class UserServiceImpl implements UserService {
 
     // to save new user in app
     @Override
-    public User createUser(UserDto userDto) {
+    public UserResponseDto createUser(UserDto userDto) {
 
 
         // chack if username is not exists
@@ -40,6 +39,7 @@ public class UserServiceImpl implements UserService {
         user.setUsername(userDto.getUsername().trim());
         user.setEmail(userDto.getEmail().trim());
         user.setPassword(bCryptPasswordEncoder.encode(userDto.getPassword()));
-        return userRepository.save(user);
+        User saveUser=userRepository.save(user);
+        return new UserResponseDto(saveUser.getId(),saveUser.getUsername(),saveUser.getEmail());
     }
 }
