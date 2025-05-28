@@ -42,4 +42,21 @@ public class UserServiceImpl implements UserService {
         User saveUser=userRepository.save(user);
         return new UserResponseDto(saveUser.getId(),saveUser.getUsername(),saveUser.getEmail());
     }
-}
+   @Override
+    public UserResponseDto userLogin(UserLoginDto userLoginDto) {
+        User user=userRepository.findByEmail(userLoginDto.getEmail().trim())
+                .orElseThrow(()->new InvalidCredentialsException("email or password are invalid "));
+
+        if (!bCryptPasswordEncoder.matches(userLoginDto.getPassword(),user.getPassword())){
+            throw  new InvalidCredentialsException("email or password are invalid ");
+        }
+        UserResponseDto userResponseDto=new UserResponseDto();
+        userResponseDto.setId(user.getId());
+        userResponseDto.setUsername(user.getUsername());
+        userResponseDto.setEmail(user.getEmail());
+
+
+
+        return userResponseDto;
+   }
+   }
