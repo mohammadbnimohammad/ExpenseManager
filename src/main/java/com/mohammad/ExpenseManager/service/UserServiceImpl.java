@@ -55,8 +55,18 @@ public class UserServiceImpl implements UserService {
         userResponseDto.setUsername(user.getUsername());
         userResponseDto.setEmail(user.getEmail());
 
-
-
         return userResponseDto;
+   }
+   @Override
+    public UserResponseDto getUserById(Long id){
+
+        User user = userRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("id is not found"));
+
+       UserResponseDto userResponseDto=new UserResponseDto();
+       userResponseDto.setId(user.getId());
+       userResponseDto.setUsername(user.getUsername());
+       userResponseDto.setEmail(user.getEmail());
+
+       return userResponseDto;
    }
    }

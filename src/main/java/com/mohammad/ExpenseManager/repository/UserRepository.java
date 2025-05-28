@@ -1,5 +1,4 @@
 package com.mohammad.ExpenseManager.repository;
-import com.mohammad.ExpenseManager.dto.UserResponseDto;
 import org.springframework.data.jpa.repository.JpaRepository;
 import com.mohammad.ExpenseManager.model.User;
 

@@ -30,6 +30,12 @@ public class GlobalExceptionHandler{
         response.put("error", ex.getMessage());
         return new ResponseEntity<>(response,HttpStatus.UNAUTHORIZED);
     }
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity<Map<String,String>> handleResourceNotFoundException(ResourceNotFoundException ex){
+        Map<String,String> response=new HashMap<>();
+        response.put("error",ex.getMessage());
+        return new ResponseEntity<>(response,HttpStatus.NOT_FOUND);
+    }
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Map<String,String>> handleValidationExceptions(MethodArgumentNotValidException ex){
         Map<String,String> errors=new HashMap<>();
