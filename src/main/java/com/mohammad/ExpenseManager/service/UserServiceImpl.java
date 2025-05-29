@@ -1,6 +1,6 @@
 package com.mohammad.ExpenseManager.service;
 
-import com.mohammad.ExpenseManager.config.JwtUtil;
+import com.mohammad.ExpenseManager.security.JwtUtil;
 import com.mohammad.ExpenseManager.dto.*;
 import com.mohammad.ExpenseManager.exception.*;
 import com.mohammad.ExpenseManager.model.User;

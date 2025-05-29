@@ -1,4 +1,4 @@
-package com.mohammad.ExpenseManager.config;
+package com.mohammad.ExpenseManager.security;
 
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -27,13 +27,17 @@ public class JwtUtil {
     }
 
     //  Validate token (check subject + expiration)
-    public boolean validateToken(String token, UserDetails userDetails) {
+    public boolean isValidateToken(String token, UserDetails userDetails) {
         final String username = extractUsername(token);
         return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
     }
 
-    // Extract username/email (subject) from token
+    // Extract username (subject) from token
     public String extractUsername(String token) {
+        return extractClaim(token, Claims::getSubject);
+    }
+    // Extract email (subject) from token
+    public String extractEmail(String token) {
         return extractClaim(token, Claims::getSubject);
     }
 
