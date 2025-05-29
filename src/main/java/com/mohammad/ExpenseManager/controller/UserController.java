@@ -1,5 +1,6 @@
 package com.mohammad.ExpenseManager.controller;
 
+import com.mohammad.ExpenseManager.dto.JwtResponseDto;
 import com.mohammad.ExpenseManager.dto.UserDto;
 import com.mohammad.ExpenseManager.dto.UserLoginDto;
 import com.mohammad.ExpenseManager.dto.UserResponseDto;
@@ -25,8 +26,8 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<UserResponseDto>loginUser(@Valid@RequestBody UserLoginDto userLoginDto){
-        UserResponseDto loginUser=userService.userLogin(userLoginDto);
+    public ResponseEntity<JwtResponseDto>loginUser(@Valid@RequestBody UserLoginDto userLoginDto){
+        JwtResponseDto loginUser=userService.userLogin(userLoginDto);
         return new ResponseEntity<>(loginUser,HttpStatus.ACCEPTED);
     }
 
