@@ -7,6 +7,7 @@ import com.mohammad.ExpenseManager.model.User;
 import com.mohammad.ExpenseManager.repository.UserRepository;
 
 import com.mohammad.ExpenseManager.security.CustomUserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -68,6 +69,18 @@ public class UserServiceImpl implements UserService {
     public UserResponseDto getUserById(Long id) {
 
         User user = userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("id is not found"));
+
+        UserResponseDto userResponseDto = new UserResponseDto();
+        userResponseDto.setId(user.getId());
+        userResponseDto.setUsername(user.getUsername());
+        userResponseDto.setEmail(user.getEmail());
+
+        return userResponseDto;
+    }
+    @Override
+    public UserResponseDto getCurrentUser(String email) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + email));
 
         UserResponseDto userResponseDto = new UserResponseDto();
         userResponseDto.setId(user.getId());

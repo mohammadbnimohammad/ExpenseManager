@@ -12,4 +12,5 @@ public interface UserService {
    public JwtResponseDto userLogin (UserLoginDto userLoginDto);
 
    public UserResponseDto getUserById(Long id);
+   public UserResponseDto getCurrentUser(String email);
 }

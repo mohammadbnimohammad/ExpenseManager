@@ -9,11 +9,13 @@ import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.security.core.Authentication;
 
 @RestController
 @RequestMapping("/api/user")
 public class UserController {
     private final UserService userService;
+
 
     public UserController(UserService userService){
         this.userService=userService;
@@ -36,4 +38,11 @@ public class UserController {
         UserResponseDto getUserById=userService.getUserById(id);
         return new ResponseEntity<>(getUserById,HttpStatus.OK);
     }
+    @GetMapping("/me")
+    public ResponseEntity<UserResponseDto> getCurrentUser(Authentication authentication) {
+        String email = authentication.getName();
+        UserResponseDto user = userService.getCurrentUser(email);
+        return new ResponseEntity<>(user, HttpStatus.OK);
+    }
+
 }
