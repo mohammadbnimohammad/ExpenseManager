@@ -1,9 +1,6 @@
 package com.mohammad.ExpenseManager.service;
 
-import com.mohammad.ExpenseManager.dto.JwtResponseDto;
-import com.mohammad.ExpenseManager.dto.UserDto;
-import com.mohammad.ExpenseManager.dto.UserLoginDto;
-import com.mohammad.ExpenseManager.dto.UserResponseDto;
+import com.mohammad.ExpenseManager.dto.*;
 
 
 public interface UserService {
@@ -12,5 +9,8 @@ public interface UserService {
    public JwtResponseDto userLogin (UserLoginDto userLoginDto);
 
    public UserResponseDto getUserById(Long id);
+
    public UserResponseDto getCurrentUser(String email);
+
+   public UserResponseDto updateUser(UpdateUserDto dto);
 }

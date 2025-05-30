@@ -1,9 +1,6 @@
 package com.mohammad.ExpenseManager.controller;
 
-import com.mohammad.ExpenseManager.dto.JwtResponseDto;
-import com.mohammad.ExpenseManager.dto.UserDto;
-import com.mohammad.ExpenseManager.dto.UserLoginDto;
-import com.mohammad.ExpenseManager.dto.UserResponseDto;
+import com.mohammad.ExpenseManager.dto.*;
 import com.mohammad.ExpenseManager.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -43,6 +40,12 @@ public class UserController {
         String email = authentication.getName();
         UserResponseDto user = userService.getCurrentUser(email);
         return new ResponseEntity<>(user, HttpStatus.OK);
+    }
+
+    @PutMapping
+    public ResponseEntity<UserResponseDto> updateUser(@Valid@RequestBody UpdateUserDto updateUserDto){
+        UserResponseDto updateUser=userService.updateUser(updateUserDto);
+        return ResponseEntity.ok(updateUser);
     }
 
 }

@@ -1,5 +1,6 @@
 package com.mohammad.ExpenseManager.dto;
 
+import com.mohammad.ExpenseManager.model.User;
 import lombok.*;
 
 @Setter

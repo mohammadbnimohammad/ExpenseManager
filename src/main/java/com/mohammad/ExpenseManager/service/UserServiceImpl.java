@@ -7,6 +7,7 @@ import com.mohammad.ExpenseManager.model.User;
 import com.mohammad.ExpenseManager.repository.UserRepository;
 
 import com.mohammad.ExpenseManager.security.CustomUserDetails;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -50,14 +51,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public JwtResponseDto userLogin(UserLoginDto userLoginDto) {
-        User user = userRepository.findByEmail(userLoginDto.getEmail().trim())
-                .orElseThrow(() -> new InvalidCredentialsException("email or password are invalid "));
+        User user = userRepository.findByEmail(userLoginDto.getEmail().trim()).orElseThrow(() -> new InvalidCredentialsException("email or password are invalid "));
 
         if (!bCryptPasswordEncoder.matches(userLoginDto.getPassword(), user.getPassword())) {
             throw new InvalidCredentialsException("email or password are invalid ");
         }
 
-        JwtResponseDto jwtResponseDto=new JwtResponseDto();
+        JwtResponseDto jwtResponseDto = new JwtResponseDto();
         jwtResponseDto.setUsername(user.getUsername());
         jwtResponseDto.setEmail(user.getEmail());
         jwtResponseDto.setToken(jwtUtil.generateToken(new CustomUserDetails(user)));
@@ -77,15 +77,49 @@ public class UserServiceImpl implements UserService {
 
         return userResponseDto;
     }
+
     @Override
     public UserResponseDto getCurrentUser(String email) {
-        User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + email));
+        User user = userRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + email));
 
         UserResponseDto userResponseDto = new UserResponseDto();
         userResponseDto.setId(user.getId());
         userResponseDto.setUsername(user.getUsername());
         userResponseDto.setEmail(user.getEmail());
+
+        return userResponseDto;
+    }
+
+    private User getCurrentUser() {
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        return userRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException("user not found with email:" + email));
+    }
+
+    @Override
+    public UserResponseDto updateUser(UpdateUserDto dto) {
+        User currentUser = getCurrentUser(); // reuse your existing method
+
+        // Check if username/email changed and already exists
+        if (!currentUser.getUsername().equals(dto.getUsername().trim())) {
+            if (userRepository.existsByUsername(dto.getUsername())) {
+                throw new UsernameAlreadyExistsException("Username is already taken.");
+            }
+            currentUser.setUsername(dto.getUsername());
+        }
+
+        if (!currentUser.getEmail().equals(dto.getEmail().trim())) {
+            if (userRepository.existsByEmail(dto.getEmail())) {
+                throw new EmailAlreadyExistsException("Email already in use.");
+            }
+            currentUser.setEmail(dto.getEmail());
+        }
+
+        userRepository.save(currentUser);
+
+        UserResponseDto userResponseDto = new UserResponseDto();
+        userResponseDto.setId(currentUser.getId());
+        userResponseDto.setUsername(currentUser.getUsername().trim());
+        userResponseDto.setEmail(currentUser.getEmail().trim());
 
         return userResponseDto;
     }
