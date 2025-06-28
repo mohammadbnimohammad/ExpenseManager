@@ -48,4 +48,10 @@ public class UserController {
         return ResponseEntity.ok(updateUser);
     }
 
+    @PutMapping("/change-Password")
+    public ResponseEntity<String> changePassword(@Valid@RequestBody ChangePasswordDto passwordDto){
+        userService.changePassword(passwordDto);
+        return ResponseEntity.ok("Password is changed ");
+    }
+
 }

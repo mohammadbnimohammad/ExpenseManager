@@ -97,7 +97,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserResponseDto updateUser(UpdateUserDto dto) {
-        User currentUser = getCurrentUser(); // reuse your existing method
+        User currentUser = getCurrentUser();
 
         // Check if username/email changed and already exists
         if (!currentUser.getUsername().equals(dto.getUsername().trim())) {
@@ -122,5 +122,22 @@ public class UserServiceImpl implements UserService {
         userResponseDto.setEmail(currentUser.getEmail().trim());
 
         return userResponseDto;
+    }
+
+
+    @Override
+    public void changePassword(ChangePasswordDto changePasswordDto){
+        User user =getCurrentUser();
+
+        if (!bCryptPasswordEncoder.matches(changePasswordDto.getCurrentPassword(), user.getPassword())){
+           throw new InvalidCredentialsException("Current password is incorrect. ");
+       }
+        if (bCryptPasswordEncoder.matches(changePasswordDto.getNewPassword(), user.getPassword())){
+            throw new InvalidCredentialsException("New password must be different from the old password.");
+        }
+
+       user.setPassword(bCryptPasswordEncoder.encode(changePasswordDto.getNewPassword()));
+        userRepository.save(user);
+
     }
 }

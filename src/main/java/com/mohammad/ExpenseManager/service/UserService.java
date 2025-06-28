@@ -13,4 +13,6 @@ public interface UserService {
    public UserResponseDto getCurrentUser(String email);
 
    public UserResponseDto updateUser(UpdateUserDto dto);
+
+   public void changePassword(ChangePasswordDto changePasswordDto);
 }
