@@ -20,7 +20,6 @@ public class User {
     @Column(nullable = false, unique = true)
     private String username;
 
-    @NotBlank(message = "Email is required")
     @Email(message = "Email is must be valid ")
     @Column(nullable = false, unique = true)
     private String email;
