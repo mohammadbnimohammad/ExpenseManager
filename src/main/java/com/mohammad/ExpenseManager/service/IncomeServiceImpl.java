@@ -1,0 +1,44 @@
+package com.mohammad.ExpenseManager.service;
+
+import com.mohammad.ExpenseManager.dto.IncomeDto;
+import com.mohammad.ExpenseManager.dto.IncomeResponseDto;
+import com.mohammad.ExpenseManager.model.Income;
+import com.mohammad.ExpenseManager.model.User;
+import com.mohammad.ExpenseManager.repository.IncomeRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+
+@Service
+public class IncomeServiceImpl implements IncomeService {
+    @Autowired
+    private IncomeRepository incomeRepository;
+
+    @Autowired
+    private UserService userService;
+
+
+    @Override
+    public IncomeResponseDto createIncome (IncomeDto incomeDto) {
+        User currentUser = userService.getCurrentEntity();
+
+        Income income = new Income();
+        income.setTitle(incomeDto.getTitle());
+        income.setDate(incomeDto.getDate());
+        income.setDescription(incomeDto.getDescription());
+        income.setAmount(incomeDto.getAmount());
+        income.setUser(currentUser);
+
+        Income saveIncome = incomeRepository.save(income);
+
+        return new IncomeResponseDto(
+            saveIncome.getId(),
+            saveIncome.getTitle(),
+            saveIncome.getAmount(),
+            saveIncome.getDate(),
+            saveIncome.getDescription()
+        );
+    }
+
+
+}

@@ -1,6 +1,7 @@
 package com.mohammad.ExpenseManager.service;
 
 import com.mohammad.ExpenseManager.dto.*;
+import com.mohammad.ExpenseManager.model.User;
 
 
 public interface UserService {
@@ -15,4 +16,6 @@ public interface UserService {
    public UserResponseDto updateUser(UpdateUserDto dto);
 
    public void changePassword(ChangePasswordDto changePasswordDto);
+
+   public User getCurrentEntity();
 }
