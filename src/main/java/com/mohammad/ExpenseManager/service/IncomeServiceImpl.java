@@ -105,4 +105,20 @@ public class IncomeServiceImpl implements IncomeService {
               income.getDescription()
        );
     }
+
+    @Override
+    public void deleteIncome(Long id){
+        User currentUser=userService.getCurrentEntity();
+
+        Income income = incomeRepository.findById(id).orElseThrow(
+                ()->new RuntimeException("this income is not existing ")
+        );
+
+        if (!income.getUser().getId().equals(currentUser.getId())){
+            throw new RuntimeException("this Id is not for current use");
+        }
+
+        incomeRepository.delete(income);
+
+    }
 }
