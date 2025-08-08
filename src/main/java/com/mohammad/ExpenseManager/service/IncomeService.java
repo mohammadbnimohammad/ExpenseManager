@@ -10,6 +10,6 @@ public interface IncomeService {
 
     public List<IncomeResponseDto> getAllIncomeForCurrentUser();
     public IncomeResponseDto getIncomeById(Long id);
-    // public IncomeResponseDto updateIncome(Long id,IncomeDto incomeDto);
+    public IncomeResponseDto updateIncome(Long id,IncomeDto incomeDto);
     //  public void deleteIncome(Long id);
 }
