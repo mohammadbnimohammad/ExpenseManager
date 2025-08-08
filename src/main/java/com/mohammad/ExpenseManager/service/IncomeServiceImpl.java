@@ -8,6 +8,8 @@ import com.mohammad.ExpenseManager.repository.IncomeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 
 @Service
 public class IncomeServiceImpl implements IncomeService {
@@ -40,5 +42,21 @@ public class IncomeServiceImpl implements IncomeService {
         );
     }
 
+    @Override
+    public List<IncomeResponseDto>getAllIncomeForCurrentUser(){
+        User currentUser=userService.getCurrentEntity();
+
+        List<Income>incomeList=incomeRepository.findByUser(currentUser);
+
+        return incomeList.stream().map(
+                income -> new IncomeResponseDto(
+                        income.getId(),
+                        income.getTitle(),
+                        income.getAmount(),
+                        income.getDate(),
+                        income.getDescription()
+                )
+        ).toList();
+    }
 
 }
