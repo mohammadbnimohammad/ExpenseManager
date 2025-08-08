@@ -21,7 +21,7 @@ public class IncomeServiceImpl implements IncomeService {
 
 
     @Override
-    public IncomeResponseDto createIncome (IncomeDto incomeDto) {
+    public IncomeResponseDto createIncome(IncomeDto incomeDto) {
         User currentUser = userService.getCurrentEntity();
 
         Income income = new Income();
@@ -34,19 +34,19 @@ public class IncomeServiceImpl implements IncomeService {
         Income saveIncome = incomeRepository.save(income);
 
         return new IncomeResponseDto(
-            saveIncome.getId(),
-            saveIncome.getTitle(),
-            saveIncome.getAmount(),
-            saveIncome.getDate(),
-            saveIncome.getDescription()
+                saveIncome.getId(),
+                saveIncome.getTitle(),
+                saveIncome.getAmount(),
+                saveIncome.getDate(),
+                saveIncome.getDescription()
         );
     }
 
     @Override
-    public List<IncomeResponseDto>getAllIncomeForCurrentUser(){
-        User currentUser=userService.getCurrentEntity();
+    public List<IncomeResponseDto> getAllIncomeForCurrentUser() {
+        User currentUser = userService.getCurrentEntity();
 
-        List<Income>incomeList=incomeRepository.findByUser(currentUser);
+        List<Income> incomeList = incomeRepository.findByUser(currentUser);
 
         return incomeList.stream().map(
                 income -> new IncomeResponseDto(
@@ -59,4 +59,22 @@ public class IncomeServiceImpl implements IncomeService {
         ).toList();
     }
 
+    @Override
+    public IncomeResponseDto getIncomeById(Long id) {
+        User currentUser = userService.getCurrentEntity();
+
+        Income income = incomeRepository.findById(id).
+                orElseThrow(() -> new RuntimeException("this id is not exist"));
+
+        if (!income.getUser().getId().equals(currentUser.getId())) {
+            throw new RuntimeException("You are not authorized to access this income.");
+        }
+        return new IncomeResponseDto(
+                income.getId(),
+                income.getTitle(),
+                income.getAmount(),
+                income.getDate(),
+                income.getDescription()
+        );
+    }
 }
