@@ -1,8 +1,6 @@
 package com.mohammad.ExpenseManager.dto;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,9 +21,11 @@ public class IncomeDto {
     private String title;
 
     @NotNull(message = "The amount is required")
+    @Positive
     private BigDecimal amount;
 
     @NotNull(message = "Date is required")
+    @PastOrPresent(message = "Date cannot be in the future")
     private LocalDate date;
 
     @Size(max = 200)

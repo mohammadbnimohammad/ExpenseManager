@@ -1,9 +1,7 @@
 package com.mohammad.ExpenseManager.model;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -30,9 +28,11 @@ public class Income {
 
     @NotNull(message = "The amount is required")
     @Column(nullable = false)
+    @Positive
     private BigDecimal amount;
 
     @Column(nullable = false,name = "income_date")
+    @PastOrPresent(message = "Date cannot be in the future")
     private LocalDate date;
 
     @Size(max = 200 )
