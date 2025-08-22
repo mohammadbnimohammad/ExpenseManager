@@ -44,12 +44,19 @@ public class GlobalExceptionHandler{
         });
         return new ResponseEntity<>(errors,HttpStatus.BAD_REQUEST);
     }
-
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Map<String,String>> handleGenericException (Exception ex){
         Map<String,String> response=new HashMap<>();
         response.put("error","Something went wrong: "+ex.getMessage());
         return new ResponseEntity<>(response,HttpStatus.BAD_REQUEST);
     }
-}
+    @ExceptionHandler(IncomeNotFoundException.class)
+    public ResponseEntity<String> handleIncomeNotFoundException(IncomeNotFoundException ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+    }
 
+    @ExceptionHandler(UnauthorizedAccessException.class)
+    public ResponseEntity<String> handleUnauthorizedAccessException(UnauthorizedAccessException ex) {
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(ex.getMessage());
+    }
+}

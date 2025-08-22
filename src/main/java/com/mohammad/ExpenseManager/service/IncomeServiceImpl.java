@@ -2,6 +2,8 @@ package com.mohammad.ExpenseManager.service;
 
 import com.mohammad.ExpenseManager.dto.IncomeDto;
 import com.mohammad.ExpenseManager.dto.IncomeResponseDto;
+import com.mohammad.ExpenseManager.exception.IncomeNotFoundException;
+import com.mohammad.ExpenseManager.exception.UnauthorizedAccessException;
 import com.mohammad.ExpenseManager.model.Income;
 import com.mohammad.ExpenseManager.model.User;
 import com.mohammad.ExpenseManager.repository.IncomeRepository;
@@ -83,11 +85,11 @@ public class IncomeServiceImpl implements IncomeService {
        User currentUser=userService.getCurrentEntity();
 
        Income income=incomeRepository.findById(id).orElseThrow(
-               ()->new RuntimeException("the income is not existing")
+               ()->new IncomeNotFoundException("the income is not existing")
        );
 
        if (!income.getUser().getId().equals(currentUser.getId())){
-           throw new RuntimeException("the income ID is not for current user");
+           throw new UnauthorizedAccessException("the income ID is not for current user");
        }
 
        income.setTitle(incomeDto.getTitle());
@@ -111,11 +113,11 @@ public class IncomeServiceImpl implements IncomeService {
         User currentUser=userService.getCurrentEntity();
 
         Income income = incomeRepository.findById(id).orElseThrow(
-                ()->new RuntimeException("this income is not existing ")
+                ()->new IncomeNotFoundException("this income is not existing ")
         );
 
         if (!income.getUser().getId().equals(currentUser.getId())){
-            throw new RuntimeException("this Id is not for current use");
+            throw new UnauthorizedAccessException("this Id is not for current use");
         }
 
         incomeRepository.delete(income);
