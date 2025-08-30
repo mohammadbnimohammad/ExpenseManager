@@ -24,7 +24,6 @@ public class ExpenseDto {
     @Positive
     private BigDecimal amount;
 
-    @NotNull
     @PastOrPresent(message = "Expense date cannot be in the future")
     private LocalDate date;
 

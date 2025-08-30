@@ -66,10 +66,10 @@ public class IncomeServiceImpl implements IncomeService {
         User currentUser = userService.getCurrentEntity();
 
         Income income = incomeRepository.findById(id).
-                orElseThrow(() -> new RuntimeException("this id is not existing"));
+                orElseThrow(() -> new IncomeNotFoundException("this id is not existing"));
 
         if (!income.getUser().getId().equals(currentUser.getId())) {
-            throw new RuntimeException("You are not authorized to access this income.");
+            throw new UnauthorizedAccessException("You are not authorized to access this income.");
         }
         return new IncomeResponseDto(
                 income.getId(),
