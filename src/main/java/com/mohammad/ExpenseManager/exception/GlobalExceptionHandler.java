@@ -63,4 +63,12 @@ public class GlobalExceptionHandler{
     public ResponseEntity<String> handleExpenseNotFoundException(ExpenseNotFoundException ex) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
     }
+    @ExceptionHandler(BudgetExceededException.class)
+    public ResponseEntity<String>handleBudgetExceededException(BudgetExceededException ex){
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
+    }
+    @ExceptionHandler(InvalidExpenseDateException.class)
+    public ResponseEntity<String>handleInvalidExpenseDateException(InvalidExpenseDateException ex){
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
+    }
 }
