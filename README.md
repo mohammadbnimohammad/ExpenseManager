@@ -1,2 +1,1 @@
-# ExpenseManager
-this is my first project 
+<h1>ExpenseManager</h1>
